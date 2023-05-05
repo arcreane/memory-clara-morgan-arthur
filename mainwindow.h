@@ -24,6 +24,8 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QRadioButton *m_easyRadioButton; // Ajouter une variable membre pour stocker un pointeur vers le bouton radio "Easy"
+    QRadioButton *m_mediumRadioButton;
+    QRadioButton *m_hardRadioButton;
 };
 
 #endif // MAINWINDOW_H

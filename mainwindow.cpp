@@ -24,15 +24,17 @@ MainWindow::MainWindow(QWidget *parent)
     difficultyGroupBox->setGeometry(QRect(QPoint(350, 300), QSize(200, 100))); // Position et taille
     m_easyRadioButton = new QRadioButton("Easy", difficultyGroupBox); // Stocker un pointeur vers le bouton radio "Easy"
     m_easyRadioButton->setObjectName("easyRadioButton"); // Nommer le bouton radio
-    QRadioButton *mediumRadioButton = new QRadioButton("Medium", difficultyGroupBox);
-    QRadioButton *hardRadioButton = new QRadioButton("Hard", difficultyGroupBox);
+    m_mediumRadioButton = new QRadioButton("Medium", difficultyGroupBox); // Stocker un pointeur vers le bouton radio "medium"
+    m_mediumRadioButton->setObjectName("mediumRadioButton"); // Nommer le bouton radio
+    m_hardRadioButton = new QRadioButton("Hard", difficultyGroupBox); // Stocker un pointeur vers le bouton radio "hard"
+    m_hardRadioButton->setObjectName("hardRadioButton"); // Nommer le bouton radio
     m_easyRadioButton->setChecked(true); // Sélectionner le bouton radio "Easy" par défaut
 
     // Ajouter les boutons radio au groupe
     QVBoxLayout *difficultyLayout = new QVBoxLayout;
     difficultyLayout->addWidget(m_easyRadioButton); // Utiliser la variable membre pour ajouter le bouton radio "Easy"
-    difficultyLayout->addWidget(mediumRadioButton);
-    difficultyLayout->addWidget(hardRadioButton);
+    difficultyLayout->addWidget(m_mediumRadioButton);
+    difficultyLayout->addWidget(m_hardRadioButton);
     difficultyGroupBox->setLayout(difficultyLayout);
 
     // Ajouter les widgets à la fenêtre
@@ -47,13 +49,16 @@ void MainWindow::startGame()
 {
     QLayout* layout = ui->centralwidget->layout();
     if (layout != nullptr) {
+        QLayoutItem* item;
+        while ((item = layout->takeAt(0)) != nullptr) {
+            delete item->widget();
+            delete item;
+        }
         delete layout;
     }
-    // Vérifier si le bouton radio "Easy" est sélectionné
-    if(m_easyRadioButton->isChecked()){ // Utiliser la variable membre pour accéder au bouton radio "Easy"
-        // Créer la grille de 4 de hauteur et 6 de longueur
-        const int ROWS = 4;
-        const int COLS = 6;
+    if(m_easyRadioButton->isChecked()){
+        int ROWS = 4;
+        int COLS = 6;
         QGridLayout* gridLayout = new QGridLayout(ui->centralwidget);
         for(int i=0; i<ROWS; i++){
             for(int j=0; j<COLS; j++){
@@ -65,8 +70,33 @@ void MainWindow::startGame()
         // Afficher la grille
         ui->centralwidget->setLayout(gridLayout);
     }
-    else{
-        // Code pour créer la grille pour les autres niveaux de difficulté
+    else if(m_mediumRadioButton->isChecked()){
+        int ROWS = 4;
+        int COLS = 9;
+        QGridLayout* gridLayout = new QGridLayout(ui->centralwidget);
+        for(int i=0; i<ROWS; i++){
+            for(int j=0; j<COLS; j++){
+                QPushButton* button = new QPushButton(ui->centralwidget);
+                button->setFixedSize(50,50);
+                gridLayout->addWidget(button,i,j);
+            }
+        }
+        // Afficher la grille
+        ui->centralwidget->setLayout(gridLayout);
+    }
+    else if(m_hardRadioButton->isChecked()){
+        int ROWS = 6;
+        int COLS = 8;
+        QGridLayout* gridLayout = new QGridLayout(ui->centralwidget);
+        for(int i=0; i<ROWS; i++){
+            for(int j=0; j<COLS; j++){
+                QPushButton* button = new QPushButton(ui->centralwidget);
+                button->setFixedSize(50,50);
+                gridLayout->addWidget(button,i,j);
+            }
+        }
+        // Afficher la grille
+        ui->centralwidget->setLayout(gridLayout);
     }
 }
 
