@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    m_cardImages.append(QPixmap(":/cartes/10_of_clubs.png"));
+    m_cardImages.append(QPixmap(":/cartes/01.png"));
 
     // Créer le bouton
     QPushButton *startButton = new QPushButton("Start Game", this);
@@ -66,7 +66,7 @@ void MainWindow::startGame()
         QGridLayout* gridLayout = new QGridLayout(ui->centralwidget);
         for(int i=0; i<ROWS; i++){
             for(int j=0; j<COLS; j++){
-                QPixmap frontImage(":/cartes/10_of_clubs.png");
+                QPixmap frontImage(":/cartes/01.png");
                 QPixmap backImage(":/cartes/back.png");
                 CardButton* card = new CardButton(frontImage, backImage, this);
 
