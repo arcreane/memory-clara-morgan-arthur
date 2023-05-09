@@ -12,6 +12,8 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    m_cardImages.append(QPixmap(":/cartes/10_of_clubs.png"));
+
     // Créer le bouton
     QPushButton *startButton = new QPushButton("Start Game", this);
 
@@ -62,8 +64,13 @@ void MainWindow::startGame()
         QGridLayout* gridLayout = new QGridLayout(ui->centralwidget);
         for(int i=0; i<ROWS; i++){
             for(int j=0; j<COLS; j++){
+                // Créer un bouton personnalisé avec une image de carte
                 QPushButton* button = new QPushButton(ui->centralwidget);
-                button->setFixedSize(50,50);
+                button->setFixedSize(74,107);
+                QPixmap pixmap(":/cartes/10_of_clubs.png"); // Charger l'image à partir du fichier de ressources
+                QIcon buttonIcon(pixmap);
+                button->setIcon(buttonIcon);
+                button->setIconSize(QSize(74,107));
                 gridLayout->addWidget(button,i,j);
             }
         }
@@ -76,8 +83,13 @@ void MainWindow::startGame()
         QGridLayout* gridLayout = new QGridLayout(ui->centralwidget);
         for(int i=0; i<ROWS; i++){
             for(int j=0; j<COLS; j++){
+                // Créer un bouton personnalisé avec une image de carte
                 QPushButton* button = new QPushButton(ui->centralwidget);
-                button->setFixedSize(50,50);
+                button->setFixedSize(74,107);
+                QPixmap pixmap(":/cartes/10_of_clubs.png"); // Charger l'image à partir du fichier de ressources
+                QIcon buttonIcon(pixmap);
+                button->setIcon(buttonIcon);
+                button->setIconSize(QSize(74,107));
                 gridLayout->addWidget(button,i,j);
             }
         }
@@ -90,8 +102,13 @@ void MainWindow::startGame()
         QGridLayout* gridLayout = new QGridLayout(ui->centralwidget);
         for(int i=0; i<ROWS; i++){
             for(int j=0; j<COLS; j++){
+                // Créer un bouton personnalisé avec une image de carte
                 QPushButton* button = new QPushButton(ui->centralwidget);
-                button->setFixedSize(50,50);
+                button->setFixedSize(74,107);
+                QPixmap pixmap(":/cartes/10_of_clubs.png"); // Charger l'image à partir du fichier de ressources
+                QIcon buttonIcon(pixmap);
+                button->setIcon(buttonIcon);
+                button->setIconSize(QSize(74,107));
                 gridLayout->addWidget(button,i,j);
             }
         }
