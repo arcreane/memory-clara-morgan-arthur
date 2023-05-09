@@ -4,7 +4,9 @@
 
 #include <QMainWindow>
 #include <QRadioButton>
-
+#include <QList>
+#include <QPixmap>
+#include <QToolButton>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -26,6 +28,8 @@ private:
     QRadioButton *m_easyRadioButton; // Ajouter une variable membre pour stocker un pointeur vers le bouton radio "Easy"
     QRadioButton *m_mediumRadioButton;
     QRadioButton *m_hardRadioButton;
+    QList<QPixmap> m_cardImages;
+
 };
 
 #endif // MAINWINDOW_H
