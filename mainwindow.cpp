@@ -1,10 +1,12 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
+#include "cardbutton.h"
 
 #include <QPushButton>
 #include <QGroupBox>
 #include <QRadioButton>
 #include <QVBoxLayout>
+#include <QStyle>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -64,14 +66,15 @@ void MainWindow::startGame()
         QGridLayout* gridLayout = new QGridLayout(ui->centralwidget);
         for(int i=0; i<ROWS; i++){
             for(int j=0; j<COLS; j++){
-                // Créer un bouton personnalisé avec une image de carte
-                QPushButton* button = new QPushButton(ui->centralwidget);
-                button->setFixedSize(74,107);
-                QPixmap pixmap(":/cartes/10_of_clubs.png"); // Charger l'image à partir du fichier de ressources
-                QIcon buttonIcon(pixmap);
-                button->setIcon(buttonIcon);
-                button->setIconSize(QSize(74,107));
-                gridLayout->addWidget(button,i,j);
+                QPixmap frontImage(":/cartes/10_of_clubs.png");
+                QPixmap backImage(":/cartes/back.png");
+                CardButton* card = new CardButton(frontImage, backImage, this);
+
+                // Add the card to the grid layout
+                gridLayout->addWidget(card, i, j);
+
+                // Connect the clicked signal of the card to the flip slot
+                connect(card, &CardButton::clicked, card, &CardButton::flip);
             }
         }
         // Afficher la grille

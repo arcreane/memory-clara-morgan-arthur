@@ -18,6 +18,8 @@ set(PROJECT_SOURCES
         mainwindow.h
         mainwindow.ui
         ressources.qrc
+        cardbutton.h
+        cardbutton.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
