@@ -7,10 +7,13 @@
 #include <QRadioButton>
 #include <QVBoxLayout>
 #include <QStyle>
+#include <QTimer>
+#include <QLabel>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
+    , m_seconds(0)
 {
     ui->setupUi(this);
 
@@ -48,6 +51,16 @@ MainWindow::MainWindow(QWidget *parent)
     ui->centralwidget->setLayout(mainLayout);
 }
 
+void MainWindow::updateTime()
+{
+    m_seconds++;
+    int minutes = m_seconds / 60;
+    int seconds = m_seconds % 60;
+    QString timeString = QString("%1:%2")
+                             .arg(minutes, 2, 10, QChar('0'))
+                             .arg(seconds, 2, 10, QChar('0'));
+    m_labelTime->setText(timeString);
+}
 
 void MainWindow::startGame()
 {
@@ -63,10 +76,23 @@ void MainWindow::startGame()
     if(m_easyRadioButton->isChecked()){
         int ROWS = 4;
         int COLS = 6;
-        QWidget* widget1 = ui->centralwidget->findChild<QWidget*>("widget_1");
-        QWidget* widget2 = ui->centralwidget->findChild<QWidget*>("widget_2");
 
-        QGridLayout* gridLayout = new QGridLayout(widget1);
+        // Créer le label
+        m_labelTime = new QLabel("00:00");
+        m_labelTime->setObjectName("labelTime"); // Nommer le label
+        m_labelTime->setAlignment(Qt::AlignHCenter | Qt::AlignTop); // Aligner le texte au centre
+        m_labelTime->setStyleSheet("font-size: 20pt; color: white"); // Définir le style
+
+        // Ajouter le label au layout du widget_2
+        QVBoxLayout* widget2Layout = new QVBoxLayout(ui->widget_2);
+        widget2Layout->addWidget(m_labelTime);
+        ui->widget_2->setLayout(widget2Layout);
+
+        // Créer le timer
+        m_timer = new QTimer(this);
+        connect(m_timer, &QTimer::timeout, this, &MainWindow::updateTime);
+        QGridLayout* gridLayout = new QGridLayout(ui->widget_1);
+
         for(int i=0; i<ROWS; i++){
             for(int j=0; j<COLS; j++){
                 QPixmap frontImage(":/cartes/01.png");
@@ -81,10 +107,12 @@ void MainWindow::startGame()
             }
         }
         // Afficher la grille
-        widget1->setStyleSheet("border: 2px solid black");
-        widget2->setStyleSheet("border: 2px solid black");
+        m_seconds = 0;
+        m_timer->start(1000);
+        ui->widget_1->setStyleSheet("border: 2px solid black");
+        ui->widget_2->setStyleSheet("border: 2px solid black");
         ui->centralwidget->setStyleSheet("background-color: darkgreen");
-        widget1->setLayout(gridLayout);
+        ui->widget_1->setLayout(gridLayout);
     }
     else if(m_mediumRadioButton->isChecked()){
         int ROWS = 4;

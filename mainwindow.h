@@ -7,6 +7,8 @@
 #include <QList>
 #include <QPixmap>
 #include <QToolButton>
+#include <QLabel>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -22,6 +24,7 @@ public:
 
 private slots:
     void startGame();
+    void updateTime();
 
 private:
     Ui::MainWindow *ui;
@@ -30,6 +33,8 @@ private:
     QRadioButton *m_hardRadioButton;
     QList<QPixmap> m_cardImages;
     QTimer* m_timer;
+    QLabel* m_labelTime;
+    int m_seconds;
 
 };
 
