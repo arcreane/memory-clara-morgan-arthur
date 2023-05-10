@@ -63,6 +63,29 @@ void MainWindow::startGame()
     if(m_easyRadioButton->isChecked()){
         int ROWS = 4;
         int COLS = 6;
+        QWidget* widget1 = ui->centralwidget->findChild<QWidget*>("widget_1");
+
+        QGridLayout* gridLayout = new QGridLayout(widget1);
+        for(int i=0; i<ROWS; i++){
+            for(int j=0; j<COLS; j++){
+                QPixmap frontImage(":/cartes/01.png");
+                QPixmap backImage(":/cartes/back.png");
+                CardButton* card = new CardButton(frontImage, backImage, this);
+
+                // Add the card to the grid layout
+                gridLayout->addWidget(card, i, j);
+
+                // Connect the clicked signal of the card to the flip slot
+                connect(card, &CardButton::clicked, card, &CardButton::flip);
+            }
+        }
+        // Afficher la grille
+        widget1->setStyleSheet("background-color: darkgreen");
+        widget1->setLayout(gridLayout);
+    }
+    else if(m_mediumRadioButton->isChecked()){
+        int ROWS = 4;
+        int COLS = 9;
         QGridLayout* gridLayout = new QGridLayout(ui->centralwidget);
         for(int i=0; i<ROWS; i++){
             for(int j=0; j<COLS; j++){
@@ -78,25 +101,7 @@ void MainWindow::startGame()
             }
         }
         // Afficher la grille
-        ui->centralwidget->setLayout(gridLayout);
-    }
-    else if(m_mediumRadioButton->isChecked()){
-        int ROWS = 4;
-        int COLS = 9;
-        QGridLayout* gridLayout = new QGridLayout(ui->centralwidget);
-        for(int i=0; i<ROWS; i++){
-            for(int j=0; j<COLS; j++){
-                // Créer un bouton personnalisé avec une image de carte
-                QPushButton* button = new QPushButton(ui->centralwidget);
-                button->setFixedSize(74,107);
-                QPixmap pixmap(":/cartes/10_of_clubs.png"); // Charger l'image à partir du fichier de ressources
-                QIcon buttonIcon(pixmap);
-                button->setIcon(buttonIcon);
-                button->setIconSize(QSize(74,107));
-                gridLayout->addWidget(button,i,j);
-            }
-        }
-        // Afficher la grille
+        ui->centralwidget->setStyleSheet("background-color: darkgreen");
         ui->centralwidget->setLayout(gridLayout);
     }
     else if(m_hardRadioButton->isChecked()){
@@ -105,17 +110,19 @@ void MainWindow::startGame()
         QGridLayout* gridLayout = new QGridLayout(ui->centralwidget);
         for(int i=0; i<ROWS; i++){
             for(int j=0; j<COLS; j++){
-                // Créer un bouton personnalisé avec une image de carte
-                QPushButton* button = new QPushButton(ui->centralwidget);
-                button->setFixedSize(74,107);
-                QPixmap pixmap(":/cartes/10_of_clubs.png"); // Charger l'image à partir du fichier de ressources
-                QIcon buttonIcon(pixmap);
-                button->setIcon(buttonIcon);
-                button->setIconSize(QSize(74,107));
-                gridLayout->addWidget(button,i,j);
+                QPixmap frontImage(":/cartes/01.png");
+                QPixmap backImage(":/cartes/back.png");
+                CardButton* card = new CardButton(frontImage, backImage, this);
+
+                // Add the card to the grid layout
+                gridLayout->addWidget(card, i, j);
+
+                // Connect the clicked signal of the card to the flip slot
+                connect(card, &CardButton::clicked, card, &CardButton::flip);
             }
         }
         // Afficher la grille
+        ui->centralwidget->setStyleSheet("background-color: darkgreen");
         ui->centralwidget->setLayout(gridLayout);
     }
 }
@@ -124,5 +131,5 @@ void MainWindow::startGame()
 MainWindow::~MainWindow()
 {
     delete ui;
-}
+    }
 

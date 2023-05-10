@@ -53,5 +53,6 @@
         <file>cartes/51.png</file>
         <file>cartes/52.png</file>
         <file>cartes/back.png</file>
+        <file>CardAnimation.qml</file>
     </qresource>
 </RCC>
