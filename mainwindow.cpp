@@ -64,6 +64,7 @@ void MainWindow::startGame()
         int ROWS = 4;
         int COLS = 6;
         QWidget* widget1 = ui->centralwidget->findChild<QWidget*>("widget_1");
+        QWidget* widget2 = ui->centralwidget->findChild<QWidget*>("widget_2");
 
         QGridLayout* gridLayout = new QGridLayout(widget1);
         for(int i=0; i<ROWS; i++){
@@ -80,7 +81,9 @@ void MainWindow::startGame()
             }
         }
         // Afficher la grille
-        widget1->setStyleSheet("background-color: darkgreen");
+        widget1->setStyleSheet("border: 2px solid black");
+        widget2->setStyleSheet("border: 2px solid black");
+        ui->centralwidget->setStyleSheet("background-color: darkgreen");
         widget1->setLayout(gridLayout);
     }
     else if(m_mediumRadioButton->isChecked()){

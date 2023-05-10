@@ -29,6 +29,7 @@ private:
     QRadioButton *m_mediumRadioButton;
     QRadioButton *m_hardRadioButton;
     QList<QPixmap> m_cardImages;
+    QTimer* m_timer;
 
 };
 
