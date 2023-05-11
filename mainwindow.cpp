@@ -19,36 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     m_cardImages.append(QPixmap(":/cartes/01.png"));
 
-    // Créer le bouton
-    QPushButton *startButton = new QPushButton("Start Game", this);
-
-    // Configurer le bouton
-    startButton->setGeometry(QRect(QPoint(350, 100), QSize(200, 150))); // Position et taille
-    connect(startButton, &QPushButton::clicked, this, &MainWindow::startGame);
-
-    // Créer la boîte de groupe pour la difficulté
-    QGroupBox* difficultyGroupBox = new QGroupBox("Difficulty", this);
-    difficultyGroupBox->setGeometry(QRect(QPoint(350, 300), QSize(200, 100))); // Position et taille
-    m_easyRadioButton = new QRadioButton("Easy", difficultyGroupBox); // Stocker un pointeur vers le bouton radio "Easy"
-    m_easyRadioButton->setObjectName("easyRadioButton"); // Nommer le bouton radio
-    m_mediumRadioButton = new QRadioButton("Medium", difficultyGroupBox); // Stocker un pointeur vers le bouton radio "medium"
-    m_mediumRadioButton->setObjectName("mediumRadioButton"); // Nommer le bouton radio
-    m_hardRadioButton = new QRadioButton("Hard", difficultyGroupBox); // Stocker un pointeur vers le bouton radio "hard"
-    m_hardRadioButton->setObjectName("hardRadioButton"); // Nommer le bouton radio
-    m_easyRadioButton->setChecked(true); // Sélectionner le bouton radio "Easy" par défaut
-
-    // Ajouter les boutons radio au groupe
-    QVBoxLayout *difficultyLayout = new QVBoxLayout;
-    difficultyLayout->addWidget(m_easyRadioButton); // Utiliser la variable membre pour ajouter le bouton radio "Easy"
-    difficultyLayout->addWidget(m_mediumRadioButton);
-    difficultyLayout->addWidget(m_hardRadioButton);
-    difficultyGroupBox->setLayout(difficultyLayout);
-
-    // Ajouter les widgets à la fenêtre
-    QVBoxLayout* mainLayout = new QVBoxLayout;
-    mainLayout->addWidget(startButton);
-    mainLayout->addWidget(difficultyGroupBox); // Ajouter la boîte de groupe au layout principal
-    ui->centralwidget->setLayout(mainLayout);
+    this->restartGame();
 }
 
 void MainWindow::updateTime()
@@ -77,11 +48,6 @@ void MainWindow::startGame()
         int ROWS = 4;
         int COLS = 6;
 
-        // Créer le label
-        m_labelTime = new QLabel("00:00");
-        m_labelTime->setObjectName("labelTime"); // Nommer le label
-        m_labelTime->setAlignment(Qt::AlignHCenter | Qt::AlignTop); // Aligner le texte au centre
-        m_labelTime->setStyleSheet("font-size: 20pt; color: white"); // Définir le style
 
         // Ajouter le label au layout du widget_2
         QVBoxLayout* widget2Layout = new QVBoxLayout(ui->widget_2);
@@ -89,10 +55,8 @@ void MainWindow::startGame()
         ui->widget_2->setLayout(widget2Layout);
 
         // Créer le timer
-        m_timer = new QTimer(this);
-        connect(m_timer, &QTimer::timeout, this, &MainWindow::updateTime);
-        QGridLayout* gridLayout = new QGridLayout(ui->widget_1);
 
+        QGridLayout* gridLayout = new QGridLayout(ui->widget_1);
         for(int i=0; i<ROWS; i++){
             for(int j=0; j<COLS; j++){
                 QPixmap frontImage(":/cartes/01.png");
@@ -107,12 +71,22 @@ void MainWindow::startGame()
             }
         }
         // Afficher la grille
+        m_timer->stop();
         m_seconds = 0;
+        m_labelTime->setText("00:00");
         m_timer->start(1000);
         ui->widget_1->setStyleSheet("border: 2px solid black");
         ui->widget_2->setStyleSheet("border: 2px solid black");
         ui->centralwidget->setStyleSheet("background-color: darkgreen");
         ui->widget_1->setLayout(gridLayout);
+
+        // Créer le bouton
+        m_restartButton = new QPushButton(ui->widget_2);
+        m_restartButton->setObjectName("restartButton");
+        m_restartButton->setFixedSize(120, 40);
+        // Configurer le bouton
+        widget2Layout->addWidget(m_restartButton);
+        connect(m_restartButton, &QPushButton::clicked, this, &MainWindow::restartGame);
     }
     else if(m_mediumRadioButton->isChecked()){
         int ROWS = 4;
@@ -157,6 +131,63 @@ void MainWindow::startGame()
         ui->centralwidget->setLayout(gridLayout);
     }
 }
+
+void MainWindow::restartGame(){
+
+    // Créer le label
+    m_timer = new QTimer(this);
+    connect(m_timer, &QTimer::timeout, this, &MainWindow::updateTime);
+    m_labelTime = new QLabel("00:00");
+    m_labelTime->setObjectName("labelTime"); // Nommer le label
+    m_labelTime->setAlignment(Qt::AlignHCenter | Qt::AlignTop); // Aligner le texte au centre
+    m_labelTime->setStyleSheet("font-size: 20pt; color: white"); // Définir le style
+
+    m_timer->stop();
+    m_seconds = 0;
+    m_labelTime->setText("00:00");
+
+    QLayout* layout = ui->widget_2->layout();
+    if (layout != nullptr) {
+        QLayoutItem* item;
+        while ((item = layout->takeAt(0)) != nullptr) {
+            delete item->widget();
+            delete item;
+        }
+        delete layout;
+    }
+
+    // Créer le bouton
+    QPushButton *startButton = new QPushButton("Start Game", this);
+
+    // Configurer le bouton
+    startButton->setGeometry(QRect(QPoint(350, 100), QSize(200, 150))); // Position et taille
+    connect(startButton, &QPushButton::clicked, this, &MainWindow::startGame);
+
+    // Créer la boîte de groupe pour la difficulté
+    QGroupBox* difficultyGroupBox = new QGroupBox("Difficulty", this);
+    difficultyGroupBox->setGeometry(QRect(QPoint(350, 300), QSize(200, 100))); // Position et taille
+    m_easyRadioButton = new QRadioButton("Easy", difficultyGroupBox); // Stocker un pointeur vers le bouton radio "Easy"
+    m_easyRadioButton->setObjectName("easyRadioButton"); // Nommer le bouton radio
+    m_mediumRadioButton = new QRadioButton("Medium", difficultyGroupBox); // Stocker un pointeur vers le bouton radio "medium"
+    m_mediumRadioButton->setObjectName("mediumRadioButton"); // Nommer le bouton radio
+    m_hardRadioButton = new QRadioButton("Hard", difficultyGroupBox); // Stocker un pointeur vers le bouton radio "hard"
+    m_hardRadioButton->setObjectName("hardRadioButton"); // Nommer le bouton radio
+    m_easyRadioButton->setChecked(true); // Sélectionner le bouton radio "Easy" par défaut
+
+    // Ajouter les boutons radio au groupe
+    QVBoxLayout *difficultyLayout = new QVBoxLayout;
+    difficultyLayout->addWidget(m_easyRadioButton); // Utiliser la variable membre pour ajouter le bouton radio "Easy"
+    difficultyLayout->addWidget(m_mediumRadioButton);
+    difficultyLayout->addWidget(m_hardRadioButton);
+    difficultyGroupBox->setLayout(difficultyLayout);
+
+    // Ajouter les widgets à la fenêtre
+    QVBoxLayout* mainLayout = new QVBoxLayout;
+    mainLayout->addWidget(startButton);
+    mainLayout->addWidget(difficultyGroupBox); // Ajouter la boîte de groupe au layout principal
+    ui->centralwidget->setLayout(mainLayout);
+    }
+
 
 
 MainWindow::~MainWindow()

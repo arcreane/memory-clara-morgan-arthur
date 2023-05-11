@@ -8,6 +8,7 @@
 #include <QPixmap>
 #include <QToolButton>
 #include <QLabel>
+#include <QPushButton>
 
 
 QT_BEGIN_NAMESPACE
@@ -22,10 +23,11 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+
 private slots:
     void startGame();
     void updateTime();
-
+    void restartGame();
 private:
     Ui::MainWindow *ui;
     QRadioButton *m_easyRadioButton; // Ajouter une variable membre pour stocker un pointeur vers le bouton radio "Easy"
@@ -35,6 +37,7 @@ private:
     QTimer* m_timer;
     QLabel* m_labelTime;
     int m_seconds;
+    QPushButton* m_restartButton;
 
 };
 
