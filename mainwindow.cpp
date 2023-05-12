@@ -12,6 +12,8 @@
 #include <QFrame>
 #include <QLabel>
 #include <QDebug>
+#include <random>
+#include <algorithm>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -83,13 +85,26 @@ void MainWindow::startGame()
     // Ajouter le label au layout du widget_2
     QVBoxLayout* widget2Layout = new QVBoxLayout(widget2);
     QGridLayout* gridLayout = new QGridLayout(widget1);
-    for(int i=0; i<ROWS; i++){
-        for(int j=0; j<COLS; j++){
-            QPixmap frontImage(":/cartes/01.png");
+    QStringList cardImages;
+    for (int i = 1; i <= 52; i++) {
+        cardImages.append(QString(":/cartes/%1.png").arg(QString::number(i, 10).rightJustified(2, '0')));
+    }
+    std::random_shuffle(cardImages.begin(), cardImages.end());
+
+    cardImages.resize(ROWS * COLS / 2);
+
+    QStringList clonedCardImages = cardImages + cardImages;
+
+    std::random_shuffle(clonedCardImages.begin(), clonedCardImages.end());
+    int cardIndex = 0;
+    for(int i = 0; i < ROWS; i++){
+        for(int j = 0; j < COLS; j++){
+            QPixmap frontImage(clonedCardImages[cardIndex]);
             QPixmap backImage(":/cartes/back.png");
             CardButton* card = new CardButton(frontImage, backImage, this);
             gridLayout->addWidget(card, i, j);
             connect(card, &CardButton::clicked, card, &CardButton::flip);
+            cardIndex++;
         }
     }
     widget1->setStyleSheet("border: 2px solid black");
