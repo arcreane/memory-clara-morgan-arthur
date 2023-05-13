@@ -13,6 +13,8 @@ public:
     CardButton(const QPixmap& frontImage, const QPixmap& backImage, QWidget *parent = nullptr);
 
     void flip();
+    bool getIsFlipped();
+    QPixmap getFront();
 
 private:
     bool m_isFlipped;

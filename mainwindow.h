@@ -9,6 +9,7 @@
 #include <QToolButton>
 #include <QLabel>
 #include <QPushButton>
+#include "cardbutton.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -27,6 +28,7 @@ public:
 private slots:
     void startGame();
     void updateTime();
+    void checkWin();
     void restartGame();
 private:
     Ui::MainWindow *ui;
@@ -38,6 +40,7 @@ private:
     QLabel* m_labelTime;
     int m_seconds;
     QPushButton* m_restartButton;
+    QList<CardButton*> m_cardButtons; // Variable membre pour stocker les cartes
 
 };
 

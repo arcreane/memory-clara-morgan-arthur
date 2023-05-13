@@ -1,5 +1,6 @@
 #include "cardbutton.h"
 #include <QUrl>
+#include <QDebug>
 
 CardButton::CardButton(const QPixmap& frontImage, const QPixmap& backImage, QWidget *parent)
     : QPushButton(parent)
@@ -33,5 +34,15 @@ void CardButton::onAnimationFinished()
     {
         setIcon(m_backImage);
     }
+}
+
+bool CardButton::getIsFlipped()
+{
+    return (m_isFlipped);
+}
+
+QPixmap CardButton::getFront()
+{
+    return (m_frontImage);
 }
 

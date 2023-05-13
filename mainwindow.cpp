@@ -39,6 +39,73 @@ void MainWindow::updateTime()
     m_labelTime->setText(timeString);
 }
 
+void MainWindow::checkWin()
+{
+    int numCards = m_cardButtons.length() / 2;
+    int compteur_paires = 0;
+    int compteur_flipped = 0;
+    int firstCard = 0;
+    int secondCard = 0;
+    int i = 0;
+    if (numCards != compteur_paires)
+    {
+        for (CardButton* card : m_cardButtons) {
+            if (card->getIsFlipped() == true)
+            {
+                compteur_flipped++;
+                if (compteur_flipped == 1)
+                {
+                    firstCard = i;
+                    card->setEnabled(false);
+                    m_restartButton->setEnabled(false);
+                }
+                if (compteur_flipped == 2)
+                {
+                    secondCard = i;
+                    for (CardButton* card_disabled : m_cardButtons) {
+                        card_disabled->setEnabled(false);
+                    }
+                }
+            }
+            i++;
+        }
+        if (compteur_flipped == 2)
+        {
+            if (m_cardButtons[firstCard]->getFront().toImage() == m_cardButtons[secondCard]->getFront().toImage())
+            {
+                QTimer::singleShot(1000, [this, firstCard, secondCard]() {
+                    m_cardButtons[firstCard]->flip();
+                    m_cardButtons[secondCard]->flip();
+                    m_cardButtons[firstCard]->setVisible(false);
+                    m_cardButtons[firstCard]->setEnabled(false);
+                    m_cardButtons[secondCard]->setVisible(false);
+                    m_cardButtons[secondCard]->setEnabled(false);
+                    for (CardButton* card_enabled : m_cardButtons) {
+                        card_enabled->setEnabled(true);
+                        m_restartButton->setEnabled(true);
+                    }
+                });
+                compteur_paires++;
+            }
+            else
+            {
+                QTimer::singleShot(5000, [this, firstCard, secondCard]() {
+                    m_cardButtons[firstCard]->flip();
+                    m_cardButtons[secondCard]->flip();
+                    for (CardButton* card_enabled : m_cardButtons) {
+                        card_enabled->setEnabled(true);
+                        m_restartButton->setEnabled(true);
+                    }
+                });
+            }
+        }
+    }
+    else {
+        qInfo() << "Partie finito";
+    }
+}
+
+
 void MainWindow::startGame()
 {
     int ROWS = 0;
@@ -97,6 +164,7 @@ void MainWindow::startGame()
 
     std::random_shuffle(clonedCardImages.begin(), clonedCardImages.end());
     int cardIndex = 0;
+    m_cardButtons.clear();
     for(int i = 0; i < ROWS; i++){
         for(int j = 0; j < COLS; j++){
             QPixmap frontImage(clonedCardImages[cardIndex]);
@@ -104,6 +172,8 @@ void MainWindow::startGame()
             CardButton* card = new CardButton(frontImage, backImage, this);
             gridLayout->addWidget(card, i, j);
             connect(card, &CardButton::clicked, card, &CardButton::flip);
+            connect(card, &CardButton::clicked, this, &MainWindow::checkWin);
+            m_cardButtons.append(card); // Ajout de la carte à la liste
             cardIndex++;
         }
     }
