@@ -39,6 +39,8 @@ private:
     QTimer* m_timer;
     QLabel* m_labelTime;
     int m_seconds;
+    int m_compteur_paires;
+    QLabel* m_score;
     QPushButton* m_restartButton;
     QList<CardButton*> m_cardButtons; // Variable membre pour stocker les cartes
 

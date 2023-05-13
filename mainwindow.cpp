@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , m_seconds(0)
+    , m_compteur_paires(0)
 {
     ui->setupUi(this);
 
@@ -42,13 +43,10 @@ void MainWindow::updateTime()
 void MainWindow::checkWin()
 {
     int numCards = m_cardButtons.length() / 2;
-    int compteur_paires = 0;
     int compteur_flipped = 0;
     int firstCard = 0;
     int secondCard = 0;
     int i = 0;
-    if (numCards != compteur_paires)
-    {
         for (CardButton* card : m_cardButtons) {
             if (card->getIsFlipped() == true)
             {
@@ -85,7 +83,7 @@ void MainWindow::checkWin()
                         m_restartButton->setEnabled(true);
                     }
                 });
-                compteur_paires++;
+                m_compteur_paires++;
             }
             else
             {
@@ -99,10 +97,9 @@ void MainWindow::checkWin()
                 });
             }
         }
-    }
-    else {
-        qInfo() << "Partie finito";
-    }
+        m_score->setText(QString::number(m_compteur_paires));
+        if (numCards == m_compteur_paires)
+            qInfo() << "Partie terminée";
 }
 
 
@@ -124,6 +121,8 @@ void MainWindow::startGame()
         COLS = 8;
     }
     m_seconds = 0;
+
+    m_score = new QLabel("0");
 
     m_labelTime = new QLabel("00:00");
     m_labelTime->setObjectName("labelTime"); // Nommer le label
@@ -195,6 +194,7 @@ void MainWindow::startGame()
     // Configurer le bouton
     widget2Layout->addWidget(m_labelTime);
 
+    widget2Layout->addWidget(m_score);
     widget2Layout->addWidget(m_restartButton); // Ajouter le bouton au layout
     connect(m_restartButton, &QPushButton::clicked, this, &MainWindow::restartGame);
 }
