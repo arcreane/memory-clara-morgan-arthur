@@ -98,8 +98,11 @@ void MainWindow::checkWin()
                         i++;
                     }
                     if (numCards == compteur)
-                        // qInfo() << "Partie terminée";
-                        this->showWinningText();
+                    {
+                        QTimer::singleShot(2000, [this]() {
+                            this->showWinningText();
+                        });
+                    }
                 });
             }
             else
@@ -107,7 +110,7 @@ void MainWindow::checkWin()
                 m_posplayer++;
                 if (m_posplayer == m_player + 1)
                     m_posplayer = 1;
-                QTimer::singleShot(2000, [this, firstCard, secondCard]() {
+                QTimer::singleShot(3000, [this, firstCard, secondCard]() {
                     m_cardButtons[firstCard]->flip();
                     m_cardButtons[secondCard]->flip();
                     for (CardButton* card_enabled : m_cardButtons) {
