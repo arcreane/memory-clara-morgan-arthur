@@ -30,6 +30,7 @@ private slots:
     void updateTime();
     void checkWin();
     void restartGame();
+    void showWinningText();
 private:
     Ui::MainWindow *ui;
     QRadioButton *m_easyRadioButton; // Ajouter une variable membre pour stocker un pointeur vers le bouton radio "Easy"
@@ -39,11 +40,16 @@ private:
     QTimer* m_timer;
     QLabel* m_labelTime;
     int m_seconds;
-    int m_compteur_paires;
+    int m_compteur_paires[4];
     QLabel* m_score;
+    QLabel* m_scoreText[4];
+    QLabel* winningText;
+    QLabel* pos_joueur;
     QPushButton* m_restartButton;
     QList<CardButton*> m_cardButtons; // Variable membre pour stocker les cartes
-
+    int m_theme;
+    int m_player;
+    int m_posplayer;
 };
 
 #endif // MAINWINDOW_H

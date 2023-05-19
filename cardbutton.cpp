@@ -11,7 +11,6 @@ CardButton::CardButton(const QPixmap& frontImage, const QPixmap& backImage, QWid
     setFixedSize(74, 107);
     setIcon(m_backImage);
     setIconSize(QSize(74, 107));
-
     m_animation.setTargetObject(this);
     m_animation.setStartValue(0);
     m_animation.setEndValue(180);

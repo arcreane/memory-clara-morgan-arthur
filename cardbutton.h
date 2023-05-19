@@ -15,14 +15,14 @@ public:
     void flip();
     bool getIsFlipped();
     QPixmap getFront();
+    QPropertyAnimation m_animation;
 
 private:
     bool m_isFlipped;
     QPixmap m_frontImage;
     QPixmap m_backImage;
-    QPropertyAnimation m_animation;
 
-private slots:
+public slots:
     void onAnimationFinished();
 };
 
